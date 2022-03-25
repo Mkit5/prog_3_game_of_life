@@ -13,26 +13,33 @@ var Wall = require("./modules/Wall.js")
 
 
 
-var matrix = [];
 
-var grassArr = [];
-var grassEaterArr = [];
+
+grassArr = [];
+grassEaterArr = [];
 // var poisonGrassArr = [];
-var EaterArr = [];
-var wallArr = [];
-var waterArr = [];
+EaterArr = [];
+wallArr = [];
+waterArr = [];
+matrix = []
+
+var express = require('express');
+var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+app.use(express.static("."));
+let fs = require('fs')
+app.get('/', function (req, res) {
+    res.redirect('index.html');
+});
+server.listen(3000);
 
 
 
-
-
-
-
-
-function matrixGenerator(matrixSize, grassCount, grassEaterCount,EaterCount,WaterCount){
+function matrixGenerator(matrixSize, grassCount, grassEaterCount, EaterCount, WaterCount) {
     for (let i = 0; i < matrixSize; i++) {
         matrix[i] = []
-        for (let o = 0; o < matrixSize; o++) { 
+        for (let o = 0; o < matrixSize; o++) {
             matrix[i][o] = 0;
         }
     }
@@ -46,25 +53,25 @@ function matrixGenerator(matrixSize, grassCount, grassEaterCount,EaterCount,Wate
         let y = Math.floor(random(matrixSize));
         matrix[y][x] = 2;
     }
-        // for (let i = 0; i < poisonGrassCount; i++) {
-        //     let x = Math.floor(random(matrixSize));
-        //     let y = Math.floor(random(matrixSize));
-        //     matrix[y][x] = 3;
-        // }
-        for (let i = 0; i < EaterCount; i++) {
-            let x = Math.floor(random(matrixSize));
-            let y = Math.floor(random(matrixSize));
-            matrix[y][x] = 4;
-        }
-        for (let i = 0; i < WaterCount; i++) {
-            let x = Math.floor(random(matrixSize));
-            let y = Math.floor(random(matrixSize));
-            matrix[y][x] = 6;
-        }
-       
-    
+    // for (let i = 0; i < poisonGrassCount; i++) {
+    //     let x = Math.floor(random(matrixSize));
+    //     let y = Math.floor(random(matrixSize));
+    //     matrix[y][x] = 3;
+    // }
+    for (let i = 0; i < EaterCount; i++) {
+        let x = Math.floor(random(matrixSize));
+        let y = Math.floor(random(matrixSize));
+        matrix[y][x] = 4;
+    }
+    for (let i = 0; i < WaterCount; i++) {
+        let x = Math.floor(random(matrixSize));
+        let y = Math.floor(random(matrixSize));
+        matrix[y][x] = 6;
+    }
+return matrix
+
 }
-matrixGenerator(80, 40, 10,5,10)
+matrixGenerator(20, 40, 10, 5, 10)
 
 
 
@@ -88,33 +95,15 @@ setInterval(weather, 5000);
 
 
 
-
-var express = require('express');
-var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-app.use(express.static("."));
-app.get('/', function (req, res) {
-    res.redirect('index.html');
-});
-server.listen(3000);
-
-
-
-
-
-function creatingObjects(){
-
-
-
+function creatingObjects() {
     for (let y = 0; y < matrix.length; y++) {
         for (let x = 0; x < matrix[y].length; x++) {
-            
-            if (matrix[y][x] == 1){
+
+            if (matrix[y][x] == 1) {
                 let gr = new Grass(x, y);
                 grassArr.push(gr);
             }
-            else if (matrix[y][x] == 2){
+            else if (matrix[y][x] == 2) {
                 let eater = new GrassEater(x, y);
                 grassEaterArr.push(eater);
             }
@@ -122,101 +111,25 @@ function creatingObjects(){
             //     let eater = new poisonGrass(x, y);
             //     poisonGrassArr.push(eater);
             // }
-            else if (matrix[y][x] == 4){
+            else if (matrix[y][x] == 4) {
                 let eater = new Eater(x, y);
-                EaterArr.push(eater);}
-            else if (matrix[y][x] == 6){
-                    let eater = new Water(x, y);
-                    waterArr.push(eater);}
-               
+                EaterArr.push(eater);
+            }
+            else if (matrix[y][x] == 6) {
+                let eater = new Water(x, y);
+                waterArr.push(eater);
+            }
+
         }
-        
+
     }
 
 
 }
-function mouseDragged() {
-    let wallX = Math.floor(mouseX / side)
-    let wallY = Math.floor(mouseY / side)
-    if (wallY<0 || wallY>=80 || wallX <0 || wallX>=80){
-        return;
-    }
-
-    isWall = false
-    for (let i in wallArr) {
-        if (wallX == wallArr[i].x && wallY == wallArr[i].y && matrix[wallY][wallX]==4) {
-            isWall = true
-            break
-        }
-    }
-    if (isWall == false) {
-        if (matrix[wallY][wallX]==1){
-            for (let i in grassArr){
-                if (grassArr[i].x==wallX && grassArr[i].y==wallY) {
-                    for (let i in grassArr){
-                        if (grassArr[i].x==wallX && grassArr[i].y==wallY) {
-                            grassArr.splice(i,1)
-                        }
-                    }
-                }
-            }
-        }
-        if (matrix[wallY][wallX]==2){
-            for (let i in grassEaterArr){
-                if (grassEaterArr[i].x==wallX && grassEaterArr[i].y==wallY) {
-                    for (let i in grassEaterArr){
-                        if (grassEaterArr[i].x==wallX && grassEaterArr[i].y==wallY) {
-                            grassEaterArr.splice(i,1)
-                        }
-                    }
-                }
-            }
-        }
-        if (matrix[wallY][wallX]==3){
-            for (let i in EaterArr){
-                if (EaterArr[i].x==wallX && EaterArr[i].y==wallY) {
-                    for (let i in EaterArr){
-                        if (EaterArr[i].x==wallX && EaterArr[i].y==wallY) {
-                            EaterArr.splice(i,1)
-                        }
-                    }
-                }
-            }
-        }
-        // if (matrix[wallY][wallX]==4){
-        //     for (let i in poisonGrassArr){
-        //         if (poisonGrassArr[i].x==wallX && poisonGrassArr[i].y==wallY) {
-        //             for (let i in poisonGrassArr){
-        //                 if (poisonGrassArr[i].x==wallX && poisonGrassArr[i].y==wallY) {
-        //                     poisonGrassArr.splice(i,1)
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        if (matrix[wallY][wallX]==6){
-            for (let i in waterArr){
-                if (waterArr[i].x==wallX && waterArr[i].y==wallY) {
-                    for (let i in waterArr){
-                        if (waterArr[i].x==wallX && waterArr[i].y==wallY) {
-                            waterArr.splice(i,1)
-                        }
-                    }
-                }
-            }
-        }
-        
-        wallArr.push(new Wall(wallX, wallY))
-    }
-    return false;
-}
 
 
 
-
-
-
-function game(){
+function game() {
 
     for (let i = 0; i < grassArr.length; i++) {
         const grass = grassArr[i];
@@ -234,11 +147,11 @@ function game(){
     //     poison.mul();
 
     // }
-    for (let i = 0; i <EaterArr.length; i++) {
+    for (let i = 0; i < EaterArr.length; i++) {
         const Eater = EaterArr[i];
         Eater.eat();
     }
-    for (let i = 0; i <waterArr.length; i++) {
+    for (let i = 0; i < waterArr.length; i++) {
         const water = waterArr[i];
         water.create();
     }
@@ -251,19 +164,25 @@ function game(){
         EaterCounter: EaterArr.length,
         WaterCounter: waterArr.length,
         WallCounter: wallArr.length,
+        grassArr:grassArr,
+        grassEaterArr:grassEaterArr,
+        EaterArr:EaterArr,
+        waterArr:waterArr,
+        wallArr:wallArr
     }
 
 
     io.sockets.emit("data", sendData);
 
+    io.sockets.emit("wallData", sendData);
 
 
 }
-setInterval(game, 1000)
+setInterval(game, 500)
 
 
 
-function kill(){
+function kill() {
 
     grassArr = [];
     grassEaterArr = [];
@@ -288,7 +207,13 @@ io.on('connection', function (socket) {
 
 
 
+function mousedreggig(data) {
+    console.log(data);
+    
+    wallArr.push(new Wall(wallX, wallY))
+}
 
+// io.sockets.emit("wallData", mousedreggig);
 
 
 

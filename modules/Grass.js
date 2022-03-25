@@ -1,8 +1,8 @@
-var LivingCreature = require("./LiveForm");
+var LivingCreature = require("./LivingCreature");
 var random = require("./random");
 
 
-module.exports =class Grass extends LivingCreature{
+module.exports = class Grass extends LivingCreature{
     mul() {
         this.energy++;
         let found = this.chooseCell(0);

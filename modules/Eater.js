@@ -1,4 +1,4 @@
-var LivingCreature = require("./LiveForm");
+var LivingCreature = require("./LivingCreature");
 var random = require("./random");
 
 
