@@ -5,10 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>VERJAPES</title>
+
+
+    <style>
+            canvas {
+                display: block;
+                margin: 0 auto;
+            }
+    
+            div {
+                display: inline-block;
+            }
+    
+            h1 {
+                padding: 20px;
+                text-align: center;
+            }
+    
+            body {
+                font-family: 'Noto Sans', sans-serif !important;
+            }
+            table{        
+                padding-left:40%;        
+                padding-top:20px;
+            }
+        </style>
+
 </head>
 <body>
+
+
+        <table class="table table-hover">
+                
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Xoteri qanak@</td>
+                        <td id="grassCount"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Xotakerneri qanak@</td>
+                        <td id="grassEaterCount"></td>
+                    </tr>
+                    <tr>
+                            <th scope="row">3</th>
+                            <td>Amenakerneri qanak@</td>
+                            <td id="eaterCount"></td>
+                    </tr>
+                    <tr>
+                            <th scope="row">4</th>
+                            <td>Jri qanak@</td>
+                            <td id="waterCount"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+
     
     <button onclick="kill()">Kill them all</button>
+    <button onclick="Restart()">Restart</button>
+    
+
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
     <!-- <script src="p5.js"></script> -->
     <script src="/socket.io/socket.io.js"></script>

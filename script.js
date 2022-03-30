@@ -6,12 +6,12 @@ function setup() {
     var weath = 'summer'
 
     var matrix = [];
-    var side = 30;
+    var side = 10;
 
-    // let grassCountElement = document.getElementById('grassCount');
-    // let grassEaterCountElement = document.getElementById('grassEaterCount');
-    // let eaterCountElement = document.getElementById('eaterCount');
-    // let waterCountElement = document.getElementById('waterCount');
+    let grassCountElement = document.getElementById('grassCount');
+    let grassEaterCountElement = document.getElementById('grassEaterCount');
+    let eaterCountElement = document.getElementById('eaterCount');
+    let waterCountElement = document.getElementById('waterCount');
     // let wallCountElement = document.getElementById('wallCount');
 
 
@@ -28,12 +28,12 @@ function setup() {
         // wallArr = data.wallArr
         // wallArr = data.wallArr
         // matrix = data.matrix;
-        // grassCountElement.innerText = data.grassCounter;
-        // grassEaterCountElement.innerText = data.grassEaterCounter;
-        // eaterCountElement.innerText = data.eaterCounter;
-        // waterCountElement.innerText = data.waterCounter;
+        grassCountElement.innerText = data.grassCounter;
+        grassEaterCountElement.innerText = data.grassEaterCounter;
+        eaterCountElement.innerText = data.EaterCounter;
+        waterCountElement.innerText = data.WaterCounter;
         // wallCountElement.innerText = data.wallCounter;
-        // frameRate(20);
+        //frameRate(20);
         createCanvas(matrix[0].length * side, matrix.length * side);
         background('#acacac');
 
@@ -104,6 +104,11 @@ socket.on("wallData", (data)=> {
     
     let wallX = Math.floor(mouseX / side)
     let wallY = Math.floor(mouseY / side)
+    console.log(wallX)
+    console.log(wallY)
+
+
+
     if (wallY < 0 || wallY >= 80 || wallX < 0 || wallX >= 80) {
         return;
     }
@@ -180,4 +185,7 @@ socket.on("wallData", (data)=> {
 }
 function kill() {
     socket.emit("kill")
+}
+function Restart(){
+    socket.emit("restart")
 }

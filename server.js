@@ -71,7 +71,7 @@ function matrixGenerator(matrixSize, grassCount, grassEaterCount, EaterCount, Wa
 return matrix
 
 }
-matrixGenerator(20, 40, 10, 5, 10)
+matrixGenerator(60, 40, 10, 5, 10)
 
 
 
@@ -203,6 +203,32 @@ function kill() {
 io.on('connection', function (socket) {
     creatingObjects();
     socket.on("kill", kill);
+});
+
+function Restart() {
+
+    grassArr = [];
+    grassEaterArr = [];
+    // poisonGrassArr = [];
+    EaterArr = [];
+    wallArr = [];
+    waterArr = [];
+
+
+    for (var y = 0; y < matrix.length; y++) {
+        for (var x = 0; x < matrix[y].length; x++) {
+            matrix[y][x] = 0;
+        }
+    }
+
+    matrixGenerator(60, 40, 10, 5, 10)
+    
+
+}
+
+io.on('connection', function (socket) {
+    creatingObjects();
+    socket.on("restart", Restart);
 });
 
 
