@@ -1,8 +1,8 @@
-class Wall{
+module.exports =  class Wall{
     constructor (x,y){
         this.x = x
         this.y = y
-        
+
 
         try {
             if (matrix[y][x] == 1){
@@ -33,14 +33,13 @@ class Wall{
                     }
                 }
             }
-            matrix[y][x] = 5;   
-
-        
+            matrix[y][x] = 5;
 
 
-       
-        
-        
+
+
+
+
+
     }catch (error) {}
-        }}  
-        
+        }}

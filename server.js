@@ -21,7 +21,7 @@ grassEaterArr = [];
 EaterArr = [];
 wallArr = [];
 waterArr = [];
-matrix = []
+matrix = [];
 
 var express = require('express');
 var app = express();
@@ -128,6 +128,26 @@ function creatingObjects() {
 }
 
 
+function wall(data) {
+  // matrix[data.wallY][data.wallX] = 0
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[y].length; x++) {
+      // console.log(matrix[y][x]);
+      if(matrix[y][x] == 6) {
+      //   matrix[y] == data.wallY - 1 && matrix[x] == data.wallX - 1
+      // matrix[y][x] = 5
+      //   console.log(data);
+        let eater = new Wall(data.wallX, data.wallY);
+        wallArr.push(eater);
+      }
+    }
+  }
+}
+
+
+
+
+
 
 function game() {
 
@@ -155,6 +175,9 @@ function game() {
         const water = waterArr[i];
         water.create();
     }
+
+
+
 
 
     let sendData = {
@@ -203,41 +226,44 @@ function kill() {
 io.on('connection', function (socket) {
     creatingObjects();
     socket.on("kill", kill);
+    socket.on("wall", wall);
 });
 
-function Restart() {
+// function Restart() {
 
-    grassArr = [];
-    grassEaterArr = [];
-    // poisonGrassArr = [];
-    EaterArr = [];
-    wallArr = [];
-    waterArr = [];
-
-
-    for (var y = 0; y < matrix.length; y++) {
-        for (var x = 0; x < matrix[y].length; x++) {
-            matrix[y][x] = 0;
-        }
-    }
-
-    matrixGenerator(60, 40, 10, 5, 10)
-    
-
-}
-
-io.on('connection', function (socket) {
-    creatingObjects();
-    socket.on("restart", Restart);
-});
+//     grassArr = [];
+//     grassEaterArr = [];
+//     // poisonGrassArr = [];
+//     EaterArr = [];
+//     wallArr = [];
+//     waterArr = [];
 
 
+//     for (var y = 0; y < matrix.length; y++) {
+//         for (var x = 0; x < matrix[y].length; x++) {
+//             matrix[y][x] = 0;
+//         }
+//     }
+//     matrixGenerator(60, 40, 10, 5, 10);
+//     game();
 
-function mousedreggig(data) {
-    console.log(data);
-    
-    wallArr.push(new Wall(wallX, wallY))
-}
+
+// }
+
+// io.on('connection', function (socket) {
+//     matrixGenerator(60, 40, 10, 5, 10)
+//     game();
+//     creatingObjects();
+//     socket.on("restart", Restart);
+// });
+
+
+
+// function mousedreggig(data) {
+//     console.log(data);
+
+//     wallArr.push(new Wall(wallX, wallY))
+// }
 
 // io.sockets.emit("wallData", mousedreggig);
 
